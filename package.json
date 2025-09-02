@@ -1,7 +1,7 @@
 {
   "license": "ISC",
   "scripts": {
-    "test": "ANCHOR_WALLET=~/.config/solana/id.json ANCHOR_PROVIDER_URL=http://localhost:8899 ts-node client/client.ts"
+    "test": "ANCHOR_WALLET=~/.config/solana/id.json ANCHOR_PROVIDER_URL=http://localhost:8899 ts-node tests/entrypoint.ts"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.1",

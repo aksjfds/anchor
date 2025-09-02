@@ -1,13 +1,12 @@
 #![allow(unexpected_cfgs)]
 #![allow(deprecated)]
 
-
 use anchor_lang::prelude::*;
 
-declare_id!("HmtoDcNaMTqP7M1wQqcQuChU3C5t2XKCkqkAdDRrKRqf");
+declare_id!("DWSiPGkkZy8Kd6dU4E9Tc8nYZDxhb9N2H1znhGthZsNB");
 
 #[program]
-pub mod hello {
+pub mod entrypoint {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
