@@ -26,6 +26,9 @@ RUN echo 'export PATH=/root/.local/share/solana/install/active_release/bin' >> .
 COPY --from=builder /usr/local/cargo/bin /usr/local/cargo/bin
 
 # nodejs
+RUN apt update && apt install curl -y && \
+apt clean && rm -rf /var/lib/apt/lists/*
+
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
     export NVM_DIR="$HOME/.nvm" && \
     . "$NVM_DIR/nvm.sh" && \
