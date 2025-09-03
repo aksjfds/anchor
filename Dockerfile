@@ -23,7 +23,8 @@ FROM rust:slim
 COPY --from=builder /root/.local/share/solana/install/active_release/bin /root/.local/share/solana/install/active_release/bin
 RUN echo 'export PATH=/root/.local/share/solana/install/active_release/bin' >> .bashrc
 
-COPY --from=builder /usr/local/cargo/bin /usr/local/cargo/bin && cargo uninstall avm
+COPY --from=builder /usr/local/cargo/bin /usr/local/cargo/bin
+RUN cargo uninstall avm
 
 # nodejs
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
