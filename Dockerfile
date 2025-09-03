@@ -28,15 +28,20 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | b
 FROM rust:slim
 
 # 复制工具
-COPY --from=builder /root/.local/share/solana /root/.local/share/solana
-COPY --from=builder /usr/local/cargo/bin/anchor /usr/local/cargo/bin/anchor
-COPY --from=builder /usr/local/bin/node /usr/local/bin/node
-COPY --from=builder /usr/local/bin/npm /usr/local/bin/npm
-COPY --from=builder /usr/local/bin/pnpm /usr/local/bin/pnpm
-COPY --from=builder /usr/local/bin/ts-node /usr/local/bin/ts-node
+COPY --from=builder /root/.local/share/solana/install/active_release/bin/solana /root/.local/share/solana/install/active_release/bin/solana
+
+COPY --from=builder /usr/local/cargo/bin/cargo /usr/local/cargo/bin/cargo
+
+COPY --from=builder /root/.nvm/versions/node/v22.19.0/bin/node /root/.nvm/versions/node/v22.19.0/bin/node
+
+COPY --from=builder /root/.nvm/versions/node/v22.19.0/bin/npm /root/.nvm/versions/node/v22.19.0/bin/npm
+
+COPY --from=builder /root/.nvm/versions/node/v22.19.0/bin/pnpm /root/.nvm/versions/node/v22.19.0/bin/pnpm
+
+COPY --from=builder /root/.nvm/versions/node/v22.19.0/bin/ts-node /root/.nvm/versions/node/v22.19.0/bin/ts-node
 
 # 设置环境变量
-ENV PATH="/root/.local/share/solana/install/active_release/bin:/usr/local/cargo/bin:/usr/local/bin:$PATH"
+ENV PATH="/root/.local/share/solana/install/active_release/bin:/usr/local/cargo/bin:/root/.nvm/versions/node/v22.19.0/bin:$PATH"
 
 # 验证安装
 RUN rustc --version && solana --version && anchor --version && node --version && npm --version && pnpm --version && ts-node --version
