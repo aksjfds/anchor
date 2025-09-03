@@ -1,30 +1,18 @@
-FROM rust:slim
+FROM aksjfds/solana:base
 
-# dep
-RUN apt update && apt install -y \
-    curl \
-    build-essential \
-    pkg-config \
-    libudev-dev llvm libclang-dev \
-    protobuf-compiler libssl-dev
+ENV PATH="/root/.nvm/versions/node/v22.19.0/bin:${PATH}"
+ENV PATH="/root/.local/share/solana/install/active_release/bin:${PATH}"
 
-# solana cli
-RUN sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)" && \
-export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+WORKDIR entrypoint
 
-# anchor cli
-RUN cargo install --git https://github.com/coral-xyz/anchor avm --force && \
-avm install latest && \
-avm use latest
+COPY . .
 
-# nodejs
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+RUN pnpm install
 
-RUN export NVM_DIR="$HOME/.nvm" && \
-. "$NVM_DIR/nvm.sh" && \
-nvm install 22 && \
-corepack enable pnpm && \
-pnpm -v -y && \
-npm install -g ts-node
+RUN solana config set -ul && \
+solana-keygen new --no-bip39-passphrase
 
-# docker build -t solana:base .
+RUN anchor build
+RUN anchor test
+
+# docker build -t solana:full .
