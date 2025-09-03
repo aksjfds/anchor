@@ -1,4 +1,4 @@
-FROM solana:base
+FROM aksjfds/solana:base
 
 ENV PATH="/root/.nvm/versions/node/v22.19.0/bin:${PATH}"
 ENV PATH="/root/.local/share/solana/install/active_release/bin:${PATH}"
