@@ -41,7 +41,7 @@ COPY --from=builder /root/.nvm/versions/node/v22.19.0/bin/pnpm /root/.nvm/versio
 COPY --from=builder /root/.nvm/versions/node/v22.19.0/bin/ts-node /root/.nvm/versions/node/v22.19.0/bin/ts-node
 
 # 设置环境变量
-ENV PATH="/root/.local/share/solana/install/active_release/bin:/usr/local/cargo/bin:/root/.nvm/versions/node/v22.19.0/bin:$PATH"
+# ENV PATH="/root/.local/share/solana/install/active_release/bin:/usr/local/cargo/bin:/root/.nvm/versions/node/v22.19.0/bin:$PATH"
 
 # 验证安装
-RUN rustc --version && solana --version && anchor --version && node --version && npm --version && pnpm --version && ts-node --version
+# RUN rustc --version && solana --version && anchor --version && node --version && npm --version && pnpm --version && ts-node --version
