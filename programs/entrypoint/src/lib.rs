@@ -3,7 +3,7 @@
 
 use anchor_lang::prelude::*;
 
-declare_id!("DWSiPGkkZy8Kd6dU4E9Tc8nYZDxhb9N2H1znhGthZsNB");
+declare_id!("HrSp3iGMsXjgJXL5AZiA2UJ1XPaVDqaXgVUTGpZociiS");
 
 #[program]
 pub mod entrypoint {

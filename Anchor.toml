@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-entrypoint = "DWSiPGkkZy8Kd6dU4E9Tc8nYZDxhb9N2H1znhGthZsNB"
+entrypoint = "HrSp3iGMsXjgJXL5AZiA2UJ1XPaVDqaXgVUTGpZociiS"
 
 [registry]
 url = "https://api.apr.dev"
@@ -16,4 +16,4 @@ cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "pnpm run test"
+test = "pnpm exec ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
