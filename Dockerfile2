@@ -4,6 +4,8 @@ WORKDIR entrypoint
 
 COPY . .
 
+ENV PATH="/root/.nvm/versions/node/v22.19.0/bin:${PATH}"
+
 RUN pnpm install
 
 RUN solana config set -ul && \

@@ -18,8 +18,12 @@ avm install latest && avm use latest
 # 阶段2：运行环境
 FROM rust:slim
 
+# solana
 COPY --from=builder /root/.local/share/solana/install/active_release/bin/* /bin
+# solana platform-tools-sdk
+COPY --from=builder /root/.local/share/solana/install/releases/stable-72664e237c182faaff0fadfb6b15ba1ee4918e20/solana-release/bin/platform-tools-sdk /usr/bin/platform-tools-sdk
 
+# avm and anchor
 COPY --from=builder /root/.avm/bin/anchor-0.31.1 /root/.avm/bin/anchor-0.31.1
 COPY --from=builder /usr/local/cargo/bin/avm /bin
 RUN avm use latest
@@ -36,4 +40,8 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | b
     pnpm -v -y && \
     npm install -g ts-node
 
-# docker build -t solana:full .
+
+# docker build -t solana:base .
+
+# TODO avm 和 nodejs可以优化
+# TODO solana platform-tools-sdk 或许可以优化
