@@ -12,9 +12,10 @@ mv /usr/local/cargo/bin/anchor /usr/bin/anchor
 # 二阶段
 FROM rust:slim
 
-COPY --from=rust /usr/bin/* /usr/bin/
+# /usr/bin/* 和 /usr/bin/ 不同
+COPY --from=rust /usr/bin/ /usr/bin/
 
-# nodejs
+# # nodejs
 ARG VERSION=v22.19.0
 
 RUN apt update && apt install -y curl xz-utils && \
