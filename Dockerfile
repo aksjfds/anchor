@@ -6,7 +6,7 @@ RUN apt update && apt install -y \
     curl build-essential pkg-config libudev-dev llvm libclang-dev protobuf-compiler libssl-dev && \
 \
 \
-mkdir /mybin && export PATH="/mybin"
+mkdir /mybin && export PATH="/mybin" && \
 \
 \
 # solana cli
