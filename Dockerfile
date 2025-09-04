@@ -13,7 +13,7 @@ mv /root/.avm/bin/anchor-0.31.1 /mybin/anchor
 # # 二阶段
 FROM rust:slim
 
-COPY --from=rust /mybin/* /usr/local/bin/
+COPY --from=rust /mybin/ /usr/local/bin/
 
 # nodejs
 RUN apt update && apt install curl -y && \
@@ -23,7 +23,6 @@ nvm install 22 && \
 corepack enable pnpm && \
 pnpm -v -y && \
 \
-mv /usr/local/bin/sbf /usr/local/bin/platform-tools-sdk/sbf && \
 anchor init --package-manager pnpm --no-git entrypoint && \
 cd /entrypoint && \
 solana config set -ul && \
