@@ -1,37 +1,31 @@
 FROM rust:slim AS rust
 
 
-RUN apt update && apt install -y \
-    curl build-essential pkg-config libudev-dev llvm libclang-dev \
-    protobuf-compiler libssl-dev && \
-sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)" && \
-mv /root/.local/share/solana/install/releases/stable-*/solana-release/bin/* /usr/bin/ && \
-cargo install --git https://github.com/coral-xyz/anchor --tag v0.31.1 anchor-cli && \
-mv /usr/local/cargo/bin/anchor /usr/bin/anchor
+RUN apt update && apt install curl -y && \
+curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash
 
-# 二阶段
+RUN mkdir /mybin && \
+mv /root/.local/share/solana/install/releases/stable-*/solana-release/bin/* / && \
+\
+mv /solana /solana-keygen /solana-test-validator /cargo-build-sbf /platform-tools-sdk /mybin/ && \
+mv /root/.avm/bin/anchor-0.31.1 /mybin/anchor
+
+# # 二阶段
 FROM rust:slim
 
-# /usr/bin/* 和 /usr/bin/ 不同
-COPY --from=rust /usr/bin/ /usr/bin/
+COPY --from=rust /mybin/* /usr/local/bin/
 
-# # nodejs
-ARG VERSION=v22.19.0
-
-RUN apt update && apt install -y curl xz-utils && \
-apt clean && rm -rf /var/lib/apt/lists/*
-
-RUN curl -fsSL https://nodejs.org/dist/$VERSION/node-$VERSION-linux-x64.tar.xz -o node.tar.xz \
- && tar -xJf node.tar.xz -C /usr/local --strip-components=1 \
- && rm node.tar.xz \
- && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
- && npm install -g pnpm ts-node
-
-WORKDIR entrypoint
-
-COPY . .
-
-RUN pnpm install && \
+# nodejs
+RUN apt update && apt install curl -y && \
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
+\. "$HOME/.nvm/nvm.sh" && \
+nvm install 22 && \
+corepack enable pnpm && \
+pnpm -v -y && \
+\
+mv /usr/local/bin/sbf /usr/local/bin/platform-tools-sdk/sbf && \
+anchor init --package-manager pnpm --no-git entrypoint && \
+cd /entrypoint && \
 solana config set -ul && \
 solana-keygen new --no-bip39-passphrase && \
 anchor test
