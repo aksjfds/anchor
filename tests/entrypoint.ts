@@ -14,7 +14,7 @@ describe("entrypoint", () => {
 
   it("Is initialized!", async () => {
     const tx = await program.methods.initialize().rpc();
-    await printLogs(tx);
+    // await printLogs(tx);
   });
 });
 
