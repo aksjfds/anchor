@@ -13,7 +13,7 @@ mv /root/.avm/bin/anchor-0.31.1 /mybin/anchor
 # # 二阶段
 FROM rust:slim
 
-COPY --from=rust /mybin/* /usr/local/bin/
+COPY --from=rust /mybin/ /usr/local/bin/
 
 # nodejs
 RUN apt update && apt install curl -y && \
