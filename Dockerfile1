@@ -1,3 +1,5 @@
+# base ---------------------
+# 一阶段
 FROM rust:slim AS builder
 
 RUN apt update && apt install -y \
@@ -17,9 +19,10 @@ mv /root/.local/share/solana/install/active_release/bin/* /mybin/ && \
 mv /root/.local/share/solana/install/releases/stable-72664e237c182faaff0fadfb6b15ba1ee4918e20/solana-release/bin/platform-tools-sdk /mybin/ && \
 \
 \
+# anchor cli
 cargo install --git https://github.com/coral-xyz/anchor --tag v0.31.1 anchor-cli
 
-# 阶段2：运行环境
+# 二阶段
 FROM rust:slim
 
 COPY --from=builder /mybin/* /usr/bin/
@@ -37,3 +40,13 @@ curl -fsSL https://nodejs.org/dist/$VERSION/node-$VERSION-linux-x64.tar.xz -o no
 && rm node.tar.xz \
 && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
 && npm install -g pnpm ts-node
+# base ---------------------
+
+
+# full ---------------
+WORKDIR entrypoint
+
+COPY . .
+
+RUN pnpm install && solana config set -ul && \
+solana-keygen new --no-bip39-passphrase && anchor test
