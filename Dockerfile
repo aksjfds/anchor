@@ -32,5 +32,5 @@ COPY . .
 
 RUN pnpm install && \
 solana config set -ul && \
-solana-keygen new --no-bip39-passphras && \
+solana-keygen new --no-bip39-passphrase && \
 anchor test
