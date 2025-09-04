@@ -14,16 +14,16 @@ describe("entrypoint", () => {
 
   it("Is initialized!", async () => {
     const tx = await program.methods.initialize().rpc();
-    printLogs(tx);
+    await printLogs(tx);
   });
 });
 
 
 // printLogs
-const printLogs = (signature: string) => {
-  connection.getParsedTransaction(signature, "confirmed").then(res => {
-    const logMessages = res.meta.logMessages
-      .filter(message => message.includes("log"));
-    console.log(logMessages);
-  });
+const printLogs = async (signature: string) => {
+  const res = await connection.getParsedTransaction(signature, "confirmed");
+
+  const logMessages = res.meta.logMessages
+    .filter((message: string) => message.includes("log"));
+  console.log(logMessages);
 }

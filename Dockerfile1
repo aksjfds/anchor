@@ -11,8 +11,7 @@ RUN sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)" && \
     echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.bashrc
 
 # anchor cli
-RUN cargo install --git https://github.com/coral-xyz/anchor avm --force && \
-avm install latest && avm use latest
+RUN cargo install --git https://github.com/coral-xyz/anchor --tag v0.31.1 anchor-cli
 
 
 # 阶段2：运行环境
@@ -24,24 +23,17 @@ COPY --from=builder /root/.local/share/solana/install/active_release/bin/* /bin
 COPY --from=builder /root/.local/share/solana/install/releases/stable-72664e237c182faaff0fadfb6b15ba1ee4918e20/solana-release/bin/platform-tools-sdk /usr/bin/platform-tools-sdk
 
 # avm and anchor
-COPY --from=builder /root/.avm/bin/anchor-0.31.1 /root/.avm/bin/anchor-0.31.1
-COPY --from=builder /usr/local/cargo/bin/avm /bin
-RUN avm use latest
+COPY --from=builder /usr/local/cargo/bin/anchor /usr/local/cargo/bin/anchor
 
 # nodejs
-RUN apt update && apt install curl -y && \
+RUN apt update && apt install -y curl xz-utils && \
 apt clean && rm -rf /var/lib/apt/lists/*
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
-    export NVM_DIR="$HOME/.nvm" && \
-    . "$NVM_DIR/nvm.sh" && \
-    nvm install 22 && \
-    corepack enable pnpm && \
-    pnpm -v -y && \
-    npm install -g ts-node
+ARG VERSION=v22.19.0
 
+RUN curl -fsSL https://nodejs.org/dist/$VERSION/node-$VERSION-linux-x64.tar.xz -o node.tar.xz \
+ && tar -xJf node.tar.xz -C /usr/local --strip-components=1 \
+ && rm node.tar.xz \
+ && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-# docker build -t solana:base .
-
-# TODO avm 和 nodejs可以优化
-# TODO solana platform-tools-sdk 或许可以优化
+RUN npm install -g pnpm ts-node

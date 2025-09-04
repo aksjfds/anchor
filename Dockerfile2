@@ -4,7 +4,7 @@ WORKDIR entrypoint
 
 COPY . .
 
-ENV PATH="/root/.nvm/versions/node/v22.19.0/bin:${PATH}"
+# ENV PATH="/usr/local/bin:${PATH}"
 
 RUN pnpm install
 
