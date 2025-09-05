@@ -11,30 +11,30 @@ RUN mkdir /mybin && \
     mv /root/.avm/bin/anchor-0.31.1 /mybin/anchor
 
 # # 二阶段
-FROM rust:slim
+# FROM rust:slim
 
-COPY --from=rust /mybin/ /usr/local/bin/
+# COPY --from=rust /mybin/ /usr/local/bin/
 
-# nodejs
-RUN apt update && apt install -y --no-install-recommends curl bzip2 && \
-    apt clean && rm -rf /var/lib/apt/lists/* && \
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
-    \. "$HOME/.nvm/nvm.sh" && \
-    nvm install 22 && \
-    corepack enable pnpm && \
-    pnpm -v -y && \
-    echo 'export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH' >> ~/.bashrc
+# # nodejs
+# RUN apt update && apt install -y --no-install-recommends curl bzip2 && \
+#     apt clean && rm -rf /var/lib/apt/lists/* && \
+#     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
+#     \. "$HOME/.nvm/nvm.sh" && \
+#     nvm install 22 && \
+#     corepack enable pnpm && \
+#     pnpm -v -y && \
+#     echo 'export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH' >> ~/.bashrc
 
-WORKDIR /entrypoint
-COPY . .
+# WORKDIR /entrypoint
+# COPY . .
 
-RUN solana config set -ul && \
-    solana-keygen new --no-bip39-passphrase && \
-    \
-    export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH && \
-    rustup component add rustfmt && \
-    pnpm install && anchor build && \
-    \
-    echo 'alias ac="anchor test"' >> ~/.bashrc && \
-    echo 'alias acb="anchor build"' >> ~/.bashrc && \
-    echo 'alias acc="anchor test --skip-build"' >> ~/.bashrc
+# RUN solana config set -ul && \
+#     solana-keygen new --no-bip39-passphrase && \
+#     \
+#     export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH && \
+#     rustup component add rustfmt && \
+#     pnpm install && anchor build && \
+#     \
+#     echo 'alias ac="anchor test"' >> ~/.bashrc && \
+#     echo 'alias acb="anchor build"' >> ~/.bashrc && \
+#     echo 'alias acc="anchor test --skip-build"' >> ~/.bashrc
