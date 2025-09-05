@@ -32,7 +32,8 @@ RUN solana config set -ul && \
     solana-keygen new --no-bip39-passphrase && \
     \
     export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH && \
-    rustup component add rustfmt && anchor test && \
+    rustup component add rustfmt && \
+    pnpm install && anchor test && \
     \
     echo 'alias ac="anchor test"' >> ~/.bashrc && \
     echo 'alias acb="anchor build"' >> ~/.bashrc && \
