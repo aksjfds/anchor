@@ -34,11 +34,9 @@ RUN apt update && apt install -y --no-install-recommends curl bzip2 && \
     rustup component add rustfmt && \
     export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH && \
     \
-    pnpm install && \
-    @coral-xyz/anchor @solana/spl-token @solana/web3.js && \
+    pnpm install @coral-xyz/anchor @solana/spl-token @solana/web3.js && \
     \
-    pnpm install -D && \
-    chai mocha ts-mocha @types/chai @types/mocha && \
+    pnpm install -D chai mocha ts-mocha @types/chai @types/mocha && \
     \
     anchor test && \
     \
