@@ -26,16 +26,22 @@
 #     echo 'export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH' >> ~/.bashrc
 
 FROM aksjfds/solana:base
-WORKDIR /entrypoint
-COPY . .
+# WORKDIR /entrypoint
+# COPY . .
 
 RUN solana config set -ul && \
     solana-keygen new --no-bip39-passphrase && \
     \
     export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH && \
     rustup component add rustfmt && \
-    pnpm install && anchor build && \
     \
     echo 'alias ac="anchor test"' >> ~/.bashrc && \
     echo 'alias acb="anchor build"' >> ~/.bashrc && \
     echo 'alias acc="anchor test --skip-build"' >> ~/.bashrc
+
+RUN anchor init --package-manager pnpm --no-git entrypoint && \
+cd entrypoint && pnpm install @solana/web3.js @solana/spl-token
+
+COPY programs/entrypoint/src/Cargo.toml programs/entrypoint/src/Cargo.toml
+
+RUN anchor test
