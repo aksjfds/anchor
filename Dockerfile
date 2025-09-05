@@ -31,12 +31,12 @@ FROM aksjfds/solana:base
 RUN solana config set -ul && \
     solana-keygen new --no-bip39-passphrase && \
     \
-    export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH && \
     rustup component add rustfmt && \
     \
     echo 'alias ac="anchor test"' >> ~/.bashrc && \
     echo 'alias acb="anchor build"' >> ~/.bashrc && \
     echo 'alias acc="anchor test --skip-build"' >> ~/.bashrc
 
-RUN anchor init --package-manager pnpm --no-git entrypoint && \
+RUN export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH && \
+anchor init --package-manager pnpm --no-git entrypoint && \
 cd /entrypoint && anchor test
