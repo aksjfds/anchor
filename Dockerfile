@@ -23,7 +23,10 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash 
 nvm install 22 && \
 corepack enable pnpm && \
 pnpm -v -y && \
-echo 'export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH' >> .bashrc && \
+echo 'export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH' >> ~/.bashrc && \
+echo 'alias ac="anchor test"' >> ~/.bashrc && \
+echo 'alias acc="anchor test --skip-build"' >> ~/.bashrc && \
+source ~/.bashrc && \
 \
 anchor init --package-manager pnpm --no-git entrypoint && \
 cd /entrypoint && \
