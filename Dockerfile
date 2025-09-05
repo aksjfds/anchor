@@ -39,4 +39,4 @@ RUN solana config set -ul && \
     echo 'alias acc="anchor test --skip-build"' >> ~/.bashrc
 
 RUN anchor init --package-manager pnpm --no-git entrypoint && \
-cd entrypoint && anchor test
+cd /entrypoint && anchor test
