@@ -1,3 +1,4 @@
+# 一阶段
 FROM rust:slim AS rust
 
 
@@ -10,7 +11,7 @@ RUN mkdir /mybin && \
     mv /solana /solana-keygen /solana-test-validator /cargo-build-sbf /platform-tools-sdk /mybin/ && \
     mv /root/.avm/bin/anchor-0.31.1 /mybin/anchor
 
-# # 二阶段
+# 二阶段
 FROM rust:slim
 
 COPY --from=rust /mybin/ /usr/local/bin/
@@ -25,16 +26,20 @@ RUN apt update && apt install -y --no-install-recommends curl bzip2 && \
     pnpm -v -y && \
     echo 'export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH' >> ~/.bashrc
 
-WORKDIR /entrypoint
-COPY . .
 
 RUN solana config set -ul && \
     solana-keygen new --no-bip39-passphrase && \
     \
     export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH && \
     rustup component add rustfmt && \
-    pnpm install && anchor test && \
+    \
+    anchor init --no-git --package-manager pnpm entrypoint && \
+    cd entrypoint && anchor test && \
     \
     echo 'alias ac="anchor test"' >> ~/.bashrc && \
     echo 'alias acb="anchor build"' >> ~/.bashrc && \
     echo 'alias acc="anchor test --skip-build"' >> ~/.bashrc
+
+WORKDIR /entrypoint
+
+COPY . .
