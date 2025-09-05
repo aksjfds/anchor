@@ -13,7 +13,10 @@ describe("entrypoint", () => {
   const program = anchor.workspace.entrypoint as Program<Entrypoint>;
 
   it("Is initialized!", async () => {
-    const tx = await program.methods.initialize().rpc();
+    const amount = new anchor.BN(300);
+    console.log(amount);
+    
+    const tx = await program.methods.initialize(amount).rpc({ commitment: "processed" });
     // await printLogs(tx);
   });
 });

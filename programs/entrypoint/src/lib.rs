@@ -9,8 +9,9 @@ declare_id!("HrSp3iGMsXjgJXL5AZiA2UJ1XPaVDqaXgVUTGpZociiS");
 pub mod entrypoint {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+    pub fn initialize(ctx: Context<Initialize>, amount: u64) -> Result<()> {
         msg!("Greetings from: {:?}", ctx.program_id);
+        msg!("Greetings from: {:?}", amount);
         Ok(())
     }
 }
