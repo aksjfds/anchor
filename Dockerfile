@@ -10,20 +10,20 @@ RUN mkdir /mybin && \
     mv /solana /solana-keygen /solana-test-validator /cargo-build-sbf /platform-tools-sdk /mybin/ && \
     mv /root/.avm/bin/anchor-0.31.1 /mybin/anchor
 
-# # 二阶段
-# FROM rust:slim
+# 二阶段
+FROM rust:slim
 
-# COPY --from=rust /mybin/ /usr/local/bin/
+COPY --from=rust /mybin/ /usr/local/bin/
 
-# # nodejs
-# RUN apt update && apt install -y --no-install-recommends curl bzip2 && \
-#     apt clean && rm -rf /var/lib/apt/lists/* && \
-#     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
-#     \. "$HOME/.nvm/nvm.sh" && \
-#     nvm install 22 && \
-#     corepack enable pnpm && \
-#     pnpm -v -y && \
-#     echo 'export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH' >> ~/.bashrc
+# nodejs
+RUN apt update && apt install -y --no-install-recommends curl bzip2 && \
+    apt clean && rm -rf /var/lib/apt/lists/* && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
+    \. "$HOME/.nvm/nvm.sh" && \
+    nvm install 22 && \
+    corepack enable pnpm && \
+    pnpm -v -y && \
+    echo 'export PATH=/usr/bin/versions/node/v22.19.0/bin:$PATH' >> ~/.bashrc
 
 # WORKDIR /entrypoint
 # COPY . .
