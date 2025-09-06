@@ -22,7 +22,7 @@ RUN mv /usr/local/bin/entrypoint /entrypoint && \
     cd /entrypoint && \
     \ 
     apt update && \
-    apt install -y --no-install-recommends curl bzip2 && \
+    apt install -y --no-install-recommends curl bzip2 git && \
     apt clean && rm -rf /var/lib/apt/lists/* && \
     \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
