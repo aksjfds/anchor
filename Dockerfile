@@ -36,7 +36,7 @@ RUN apt update && apt install -y --no-install-recommends curl bzip2 && \
     \
     pnpm install @coral-xyz/anchor @solana/spl-token @solana/web3.js && \
     \
-    pnpm install -D chai mocha ts-mocha @types/chai @types/mocha && \
+    pnpm install -D chai mocha ts-mocha @types/chai @types/mocha typescript && \
     \
     anchor test && \
     \
