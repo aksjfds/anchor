@@ -10,17 +10,21 @@ RUN mkdir /mybin && \
     mv /solana /solana-keygen /solana-test-validator /cargo-build-sbf /platform-tools-sdk /mybin/ && \
     mv /root/.avm/bin/anchor-0.31.1 /mybin/anchor
 
+WORKDIR /mybin/entrypoint/
+COPY . .
+
 # 二阶段
 FROM rust:slim
 
-WORKDIR /entrypoint
-
 COPY --from=rust /mybin/ /usr/local/bin/
-COPY . .
 
-# nodejs
-RUN apt update && apt install -y --no-install-recommends curl bzip2 && \
+RUN mv /usr/local/bin/entrypoint /entrypoint && \
+    cd /entrypoint && \
+    \ 
+    apt update && \
+    apt install -y --no-install-recommends curl bzip2 && \
     apt clean && rm -rf /var/lib/apt/lists/* && \
+    \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
     \. "$HOME/.nvm/nvm.sh" && \
     nvm install 22 && \
@@ -36,7 +40,7 @@ RUN apt update && apt install -y --no-install-recommends curl bzip2 && \
     \
     pnpm install @coral-xyz/anchor @solana/spl-token @solana/web3.js && \
     \
-    pnpm install -D chai mocha ts-mocha @types/chai @types/mocha typescript && \
+    pnpm install -D chai mocha ts-mocha @types/chai @types/mocha @types/node && \
     \
     anchor test && \
     \
